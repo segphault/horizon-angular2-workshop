@@ -32,7 +32,7 @@ export class ChatApp {
   username: string
   messages: Array<ChatMessageRecord> = [];
 
-  horizon = Horizon({host: "drydock:32774"});
+  horizon = Horizon();
   collection = this.horizon("messages");
 
   onMessage(message: string) {
@@ -47,7 +47,9 @@ export class ChatApp {
     this.username = username;
     this.collection
         .order("time", "descending")
-        .limit(20).watch().reverse()
-        .forEach(messages => { this.messages = messages });
+        .limit(20).watch()
+        .forEach(messages => {
+          this.messages = [...messages].reverse()
+        });
   }
 }
